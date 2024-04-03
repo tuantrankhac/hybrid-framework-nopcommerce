@@ -12,7 +12,7 @@ public class GlobalConstants {
 	public static final String DRAG_DROP_HTML5_FOLDER = PROJECT_PATH + File.separator + "dragDropHTML5";
 	public static final String REPORTNG_SCREENSHOT = PROJECT_PATH + File.separator + "reportNGImage" + File.separator;
 	public static final long SHORT_TIMEOUT = 5;
-	public static final long LONG_TIMEOUT = 30;
+	public static final long LONG_TIMEOUT = 20;
 	public static final long RYTRY_TIMEOUT = 3;
 	public static final String TECHPANDA_USER_PAGE_URL = "http://live.techpanda.org/index.php/";
 	public static final String TECHPANDA_ADMIN_PAGE_URL = "http://live.techpanda.org/index.php/backendlogin/customer/";
