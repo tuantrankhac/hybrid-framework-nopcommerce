@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suite name="NopCommerce">
-<!-- <parameter name = "browser" value="chrome"/> -->
+<parameter name = "url" value = "https://demo.nopcommerce.com/" />
+
   <test name="Run on Chrome">
+  <parameter name = "browser" value="chrome"/>
     <classes>
-      <class name="com.nopcommerce.login.Level_03_Register_Login_Page_Object"/>
+      <class name="com.nopcommerce.login.Level_04_Register_Login_Multiple"/>
     </classes>
   </test>
   

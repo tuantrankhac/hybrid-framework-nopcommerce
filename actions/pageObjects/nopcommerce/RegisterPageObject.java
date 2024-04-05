@@ -81,8 +81,9 @@ public class RegisterPageObject extends BasePage{
 		return isElementDisplayed(driver, RegisterPageUI.SUCCSES_MESSAGE_REGISTER);
 	}
 
-	public void clickToContinueButton() {
+	public HomePageObject clickToContinueButton() {
 		waitForElementClickable(driver, RegisterPageUI.CONTINUE_BUTTON);
+		return PageGeneratorManager.getHomePage(driver);
 	}
 
 	public boolean isMessageExistEmailDisplayed() {
@@ -94,9 +95,10 @@ public class RegisterPageObject extends BasePage{
 		driver.navigate().refresh();
 	}
 
-	public void clickToLoginLink() {
+	public LoginPageObject clickToLoginLink() {
 		waitForElementClickable(driver, RegisterPageUI.LOGIN_LINK);
 		clickToElement(driver, RegisterPageUI.LOGIN_LINK);
+		return PageGeneratorManager.getLoginPage(driver);
 		
 	}
 
