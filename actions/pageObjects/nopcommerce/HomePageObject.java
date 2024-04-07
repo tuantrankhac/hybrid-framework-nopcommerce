@@ -19,9 +19,9 @@ public class HomePageObject extends BasePage{
 		
 	}
 
-	public void clickToLoginLink() {
+	public LoginPageObject clickToLoginLink() {
 		waitForElementClickable(driver, HomePageUI.LOGIN_LINK);
 		clickToElement(driver, HomePageUI.LOGIN_LINK);
+		return PageGeneratorManager.getLoginPage(driver);
 	}
-
 }
