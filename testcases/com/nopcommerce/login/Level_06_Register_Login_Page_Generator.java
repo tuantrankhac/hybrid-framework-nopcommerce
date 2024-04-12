@@ -3,10 +3,10 @@ package com.nopcommerce.login;
 import org.testng.annotations.Test;
 
 import commons.BaseTest;
-import pageObjects.nopcommerce.HomePageObject;
-import pageObjects.nopcommerce.LoginPageObject;
-import pageObjects.nopcommerce.PageGeneratorManager;
-import pageObjects.nopcommerce.RegisterPageObject;
+import pageObjects.user.nopcommerce.HomePageObject;
+import pageObjects.user.nopcommerce.LoginPageObject;
+import pageObjects.user.nopcommerce.PageGeneratorManager;
+import pageObjects.user.nopcommerce.RegisterPageObject;
 
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
@@ -51,15 +51,15 @@ public class Level_06_Register_Login_Page_Generator extends BaseTest{
 	public void TC_02_Register_Invalid_Email() {
 		registerPage.clickToGenderMaleRadioButton();
 		
-		registerPage.inputToFirstnameTextbox("Lio");
+		registerPage.enterToFirstnameTextbox("Lio");
 		
-		registerPage.inputToLastnameTextbox("Mio");
+		registerPage.enterToLastnameTextbox("Mio");
 		
-		registerPage.inputToEmailTextbox("123@123#");
+		registerPage.enterToEmailTextbox("123@123#");
 		
-		registerPage.inputToPasswordTextbox("123456");
+		registerPage.enterToPasswordTextbox("123456");
 		
-		registerPage.inputToCfPasswordTextbox("123456");
+		registerPage.enterToCfPasswordTextbox("123456");
 		
 		registerPage.clickToRegisterButton();
 		
@@ -72,15 +72,15 @@ public class Level_06_Register_Login_Page_Generator extends BaseTest{
 		
 		registerPage.clickToGenderMaleRadioButton();
 		
-		registerPage.inputToFirstnameTextbox("Lio");
+		registerPage.enterToFirstnameTextbox("Lio");
 		
-		registerPage.inputToLastnameTextbox("Mio");
+		registerPage.enterToLastnameTextbox("Mio");
 		
-		registerPage.inputToEmailTextbox(emailAddress);
+		registerPage.enterToEmailTextbox(emailAddress);
 		
-		registerPage.inputToPasswordTextbox("123456");
+		registerPage.enterToPasswordTextbox("123456");
 		
-		registerPage.inputToCfPasswordTextbox("123456");
+		registerPage.enterToCfPasswordTextbox("123456");
 		
 		registerPage.clickToRegisterButton();
 		
@@ -93,15 +93,15 @@ public class Level_06_Register_Login_Page_Generator extends BaseTest{
 	public void TC_04_Register_Existing_Email() {
 		registerPage = homePage.clickToRegisterLink();
 		
-		registerPage.inputToFirstnameTextbox("Lio");
+		registerPage.enterToFirstnameTextbox("Lio");
 		
-		registerPage.inputToLastnameTextbox("Mio");
+		registerPage.enterToLastnameTextbox("Mio");
 		
-		registerPage.inputToEmailTextbox(emailAddress);
+		registerPage.enterToEmailTextbox(emailAddress);
 		
-		registerPage.inputToPasswordTextbox("123456");
+		registerPage.enterToPasswordTextbox("123456");
 		
-		registerPage.inputToCfPasswordTextbox("123456");
+		registerPage.enterToCfPasswordTextbox("123456");
 		
 		registerPage.clickToRegisterButton();
 		
@@ -113,9 +113,9 @@ public class Level_06_Register_Login_Page_Generator extends BaseTest{
 	public void TC_05_Login_Account_With_Invalid_Password() {		
 		loginPage = registerPage.clickToLoginLink();		
 		
-		loginPage.inputToEmailTextbox(emailAddress);
+		loginPage.enterToEmailTextbox(emailAddress);
 		
-		loginPage.inputToPasswordTextbox("123321");
+		loginPage.enterToPasswordTextbox("123321");
 		
 		loginPage.clickToLoginButton();
 		
@@ -127,9 +127,9 @@ public class Level_06_Register_Login_Page_Generator extends BaseTest{
 	public void TC_06_Login_Account_Success() {
 		loginPage.refreshPage();
 		
-		loginPage.inputToEmailTextbox(emailAddress);
+		loginPage.enterToEmailTextbox(emailAddress);
 		
-		loginPage.inputToPasswordTextbox("123456");
+		loginPage.enterToPasswordTextbox("123456");
 		
 		loginPage.clickToLoginButton();
 	}

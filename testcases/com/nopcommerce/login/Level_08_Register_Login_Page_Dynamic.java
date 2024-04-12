@@ -3,13 +3,13 @@ package com.nopcommerce.login;
 import org.testng.annotations.Test;
 
 import commons.BaseTest;
-import pageObjects.nopcommerce.HomePageObject;
-import pageObjects.nopcommerce.LoginPageObject;
-import pageObjects.nopcommerce.MyAccountPageObject;
-import pageObjects.nopcommerce.OrderPageObject;
-import pageObjects.nopcommerce.PageGeneratorManager;
-import pageObjects.nopcommerce.RegisterPageObject;
-import pageObjects.nopcommerce.SearchPageObject;
+import pageObjects.user.nopcommerce.HomePageObject;
+import pageObjects.user.nopcommerce.LoginPageObject;
+import pageObjects.user.nopcommerce.MyAccountPageObject;
+import pageObjects.user.nopcommerce.OrderPageObject;
+import pageObjects.user.nopcommerce.PageGeneratorManager;
+import pageObjects.user.nopcommerce.RegisterPageObject;
+import pageObjects.user.nopcommerce.SearchPageObject;
 
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
@@ -52,11 +52,11 @@ public class Level_08_Register_Login_Page_Dynamic extends BaseTest{
 	@Test
 	public void TC_02_Register_Invalid_Email() {
 		registerPage.clickToGenderMaleRadioButton();
-		registerPage.inputToFirstnameTextbox("Lio");
-		registerPage.inputToLastnameTextbox("Mio");
-		registerPage.inputToEmailTextbox("123@123#");
-		registerPage.inputToPasswordTextbox("123456");
-		registerPage.inputToCfPasswordTextbox("123456");
+		registerPage.enterToFirstnameTextbox("Lio");
+		registerPage.enterToLastnameTextbox("Mio");
+		registerPage.enterToEmailTextbox("123@123#");
+		registerPage.enterToPasswordTextbox("123456");
+		registerPage.enterToCfPasswordTextbox("123456");
 		registerPage.clickToRegisterButton();
 		Assert.assertTrue(registerPage.isMessageWrongEmailDisplayed());
 	}
@@ -65,11 +65,11 @@ public class Level_08_Register_Login_Page_Dynamic extends BaseTest{
 	public void TC_03_Register_Success() {
 		registerPage.refreshPage();
 		registerPage.clickToGenderMaleRadioButton();
-		registerPage.inputToFirstnameTextbox("Lio");
-		registerPage.inputToLastnameTextbox("Mio");
-		registerPage.inputToEmailTextbox(emailAddress);
-		registerPage.inputToPasswordTextbox("123456");
-		registerPage.inputToCfPasswordTextbox("123456");
+		registerPage.enterToFirstnameTextbox("Lio");
+		registerPage.enterToLastnameTextbox("Mio");
+		registerPage.enterToEmailTextbox(emailAddress);
+		registerPage.enterToPasswordTextbox("123456");
+		registerPage.enterToCfPasswordTextbox("123456");
 		registerPage.clickToRegisterButton();
 		Assert.assertTrue(registerPage.isMessageSuccessRegisterDisplayed());
 		
@@ -80,9 +80,9 @@ public class Level_08_Register_Login_Page_Dynamic extends BaseTest{
 	public void TC_04_Login_Account_Success() {
 		loginPage = homePage.clickToLoginLink();
 		
-		loginPage.inputToEmailTextbox(emailAddress);
+		loginPage.enterToEmailTextbox(emailAddress);
 		
-		loginPage.inputToPasswordTextbox("123456");
+		loginPage.enterToPasswordTextbox("123456");
 		
 		loginPage.clickToLoginButton();
 		
