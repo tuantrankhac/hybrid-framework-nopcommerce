@@ -14,6 +14,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.Color;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -25,6 +26,7 @@ import pageObjects.user.nopcommerce.SearchPageObject;
 import pageUIs.user.nopcommerce.RegisterPageUI;
 import pageUIs.user.nopcommerce.UserBasePageUI;
 import pageUIs.admin.nopcommerce.AdminBasePageUI;
+import pageUIs.hrm.BasePageUI;
 
 public class BasePage {
 	
@@ -318,6 +320,11 @@ public class BasePage {
 		action.moveToElement(getWebElement(driver, xpathLocator)).perform();
 	}
 	
+	public void hoverMouseToElement(WebDriver driver, String xpathLocator, String...params) {
+		Actions action = new Actions(driver);
+		action.moveToElement(getWebElement(driver, getDynamicLocator(xpathLocator, params))).perform();
+	}
+	
 	public void hightlightElement(WebDriver driver, String xpathLocator) {
         WebElement element = getWebElement(driver, xpathLocator);
         String originalStyle = element.getAttribute("style");
@@ -388,7 +395,19 @@ public class BasePage {
                 getWebElement(driver, xpathLocator));
     }
 	
-	public void sleepInSecond(long timeout) {
+    public boolean isJQueryAjaxLoadedSuccess(WebDriver driver) {
+    	explicitWait = new WebDriverWait(driver, longTimeout);
+    	jsExecutor = (JavascriptExecutor) driver;
+    	ExpectedCondition<Boolean> jQueryLoad = new ExpectedCondition<Boolean>() {
+			@Override
+			public Boolean apply(WebDriver driver) {
+				return (Boolean) jsExecutor.executeScript("return (window.jQuery != null) && (jQuery.active === 0);");
+			}
+		};
+		return explicitWait.until(jQueryLoad);
+    }
+    
+ 	public void sleepInSecond(long timeout) {
 		try {
 			Thread.sleep(timeout* 1000);
 		} catch (InterruptedException e) {
@@ -519,6 +538,85 @@ public class BasePage {
 	public void clickToButtonByText(WebDriver driver,String buttonText) {
 		waitForElementClickable(driver, UserBasePageUI.DYNAMIC_BUTTON_BY_TEXT, buttonText);
 		clickToElement(driver, UserBasePageUI.DYNAMIC_BUTTON_BY_TEXT, buttonText);
+	}
+	
+	//HRM - Menu
+	public void openMenuPage(WebDriver driver, String menuName) {
+		waitForElementClickable(driver, BasePageUI.DYNAMIC_MENU_PAGE, menuName);
+		clickToElement(driver, BasePageUI.DYNAMIC_MENU_PAGE, menuName);
+	}
+	
+	///SubMenu
+	public void openSingleSubMenuPage(WebDriver driver, String menuName, String subMenuName) {
+		waitForElementClickable(driver, BasePageUI.DYNAMIC_MENU_PAGE, menuName);
+		clickToElement(driver, BasePageUI.DYNAMIC_MENU_PAGE, menuName);
+		
+		waitForElementClickable(driver, BasePageUI.DYNAMIC_SINGLE_SUBMENU_PAGE, subMenuName);
+		clickToElement(driver, BasePageUI.DYNAMIC_SINGLE_SUBMENU_PAGE, subMenuName);
+	}
+	
+	public void openMultiSubMenuPage(WebDriver driver, String menuName, String subMenuName) {
+		waitForElementClickable(driver, BasePageUI.DYNAMIC_MENU_PAGE, menuName);
+		clickToElement(driver, BasePageUI.DYNAMIC_MENU_PAGE, menuName);
+		
+		waitForElementClickable(driver, BasePageUI.DYNAMIC_MULTI_SUBMENU_PAGE, subMenuName);
+		clickToElement(driver, BasePageUI.DYNAMIC_MULTI_SUBMENU_PAGE, subMenuName);
+	}
+	
+	//ChildSubMenu
+	public void openChildSubMenuPage(WebDriver driver, String menuName, String subMenuName, String childSubMenuName) {
+		waitForElementClickable(driver, BasePageUI.DYNAMIC_MENU_PAGE, menuName);
+		clickToElement(driver, BasePageUI.DYNAMIC_MENU_PAGE, menuName);
+		
+		waitForElementClickable(driver, BasePageUI.DYNAMIC_MULTI_SUBMENU_PAGE, subMenuName);
+		clickToElement(driver, BasePageUI.DYNAMIC_MULTI_SUBMENU_PAGE, subMenuName);
+		
+		waitForElementClickable(driver, BasePageUI.DYNAMIC_CHILDSUBMENU_PAGE, childSubMenuName);
+		clickToElement(driver, BasePageUI.DYNAMIC_CHILDSUBMENU_PAGE, childSubMenuName);
+	
+	}
+	
+	//Textbox in Add Employee Form
+	public void enterAddEmployeeTextboxByName(WebDriver driver, String nameTextbox, String textValue) {
+		waitForElementVisible(driver, BasePageUI.DYNAMIC_ADD_EMPLOYEE_TEXTBOX_BY_NAME, nameTextbox);
+		sendkeyToElement(driver, BasePageUI.DYNAMIC_ADD_EMPLOYEE_TEXTBOX_BY_NAME, textValue, nameTextbox);
+	}
+	
+	//Textbox in Login Form
+	public void enterLoginTextboxByName(WebDriver driver, String nameTextbox, String textValue) {
+		waitForElementVisible(driver, BasePageUI.DYNAMIC_LOGIN_TEXTBOX_BY_NAME, nameTextbox);
+		sendkeyToElement(driver, BasePageUI.DYNAMIC_LOGIN_TEXTBOX_BY_NAME, textValue, nameTextbox);
+	}
+	
+	//Create Login Details Textbox
+	public void enterCreateLoginDetailsTextboxByText(WebDriver driver, String textValue, String textInput) {
+		waitForElementVisible(driver, BasePageUI.DYNAMIC_CREATE_LOGIN_DETAIL_TEXTBOX_BY_TEXT, textValue);
+		sendkeyToElement(driver, BasePageUI.DYNAMIC_CREATE_LOGIN_DETAIL_TEXTBOX_BY_TEXT, textInput, textValue);
+	}
+	
+	//Radio button
+	public void selectRadioButtonByValue(WebDriver driver, String value) {
+		waitForElementClickable(driver, BasePageUI.DYNAMIC_RADIO_BUTTON_BY_VALUE, value);
+		clickToElement(driver, BasePageUI.DYNAMIC_RADIO_BUTTON_BY_VALUE, value);
+	}
+	
+	//Search textbox
+	public void enterSeachTextboxByFieldName(WebDriver driver, String nameField, String value) {
+		waitForElementVisible(driver, BasePageUI.DYNAMIC_SEARCH_TEXTBOX_BY_NAME, nameField);
+		sendkeyToElement(driver, BasePageUI.DYNAMIC_SEARCH_TEXTBOX_BY_NAME, value, nameField);
+	}
+	
+	public String getValueInTableIDAtColumnNameAndRowIndex(WebDriver driver, String tableID, String headerName, String rowIndex) {
+		int columnIndex = getElementSize(driver, BasePageUI.TABLE_HEADER_BY_ID_AND_NAME, tableID, headerName) + 1;
+		waitForElementVisible(driver, BasePageUI.TABLE_ROW_BY_COLUMN_INDEX_AND_ROW_INDEX, tableID, rowIndex, String.valueOf(columnIndex));
+		
+		return getElementText(driver, BasePageUI.TABLE_ROW_BY_COLUMN_INDEX_AND_ROW_INDEX, tableID, rowIndex, String.valueOf(columnIndex));
+	}
+	
+	public void checkToCheckboxOrRadio(WebDriver driver, String xpathLocator) {
+		if(!isElementSelected(driver, xpathLocator)) {
+			getWebElement(driver, xpathLocator).click();
+		}
 	}
 	
 	private long shortTimeout = GlobalConstants.SHORT_TIMEOUT;
