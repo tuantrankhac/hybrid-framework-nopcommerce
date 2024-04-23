@@ -48,7 +48,7 @@ public class ProductDetailPageObject extends BasePage{
 		waitForElementVisible(drvier, ProductDetailPageUI.PICTURE_TABLE_BY_IMAGE_INFO, imageName, displayOrder, imageAlt, imageTitle);
 		return isElementDisplayed(drvier, ProductDetailPageUI.PICTURE_TABLE_BY_IMAGE_INFO, imageName, displayOrder, imageAlt, imageTitle);
 	}
-	public ProductSearchPageObject clickToSaveButton() {
+	public ProductSearchPageObject clickToSaveButtonByFormName() {
 		waitForElementClickable(drvier, ProductDetailPageUI.SAVE_BUTTON);
 		clickToElement(drvier, ProductDetailPageUI.SAVE_BUTTON);
 		return PageGeneratorManager.getProductSeachPage(drvier);

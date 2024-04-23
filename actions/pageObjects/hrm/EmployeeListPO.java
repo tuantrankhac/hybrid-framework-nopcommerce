@@ -3,6 +3,7 @@ package pageObjects.hrm;
 import org.openqa.selenium.WebDriver;
 
 import commons.BasePage;
+import pageUIs.hrm.BasePageUI;
 import pageUIs.hrm.EmployeeListPUI;
 
 public class EmployeeListPO extends BasePage{
@@ -21,7 +22,7 @@ public class EmployeeListPO extends BasePage{
 	public void clickToSearchButton() {
 		waitForElementClickable(driver, EmployeeListPUI.SEARCH_BUTTON);
 		clickToElement(driver, EmployeeListPUI.SEARCH_BUTTON);
-		//waitForElementInvisible(driver, EmployeeListPUI.LOADING_ICON);
+		waitForElementInvisible(driver, BasePageUI.LOADING_ICON);
 	}
 
 	

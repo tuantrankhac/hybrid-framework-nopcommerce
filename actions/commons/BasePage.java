@@ -19,6 +19,10 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import pageObjects.hrm.DashboardPO;
+import pageObjects.hrm.LoginPO;
+import pageObjects.hrm.MyInfoPO;
+import pageObjects.hrm.PageGenerator;
 import pageObjects.user.nopcommerce.MyAccountPageObject;
 import pageObjects.user.nopcommerce.OrderPageObject;
 import pageObjects.user.nopcommerce.PageGeneratorManager;
@@ -26,7 +30,10 @@ import pageObjects.user.nopcommerce.SearchPageObject;
 import pageUIs.user.nopcommerce.RegisterPageUI;
 import pageUIs.user.nopcommerce.UserBasePageUI;
 import pageUIs.admin.nopcommerce.AdminBasePageUI;
+import pageUIs.hrm.AddEmployeePUI;
 import pageUIs.hrm.BasePageUI;
+import pageUIs.hrm.LoginPUI;
+import pageUIs.hrm.MyInfoPUI;
 
 public class BasePage {
 	
@@ -195,13 +202,29 @@ public class BasePage {
 		return select.getFirstSelectedOption().getText();
 	}
 	
+	public String getSelectedItemDropdown(WebDriver driver, String xpathLocator) {
+		select = new Select(getWebElement(driver, xpathLocator));
+		return select.getFirstSelectedOption().getText();
+	}
+	
+	public String getSelectedItemDropdown(WebDriver driver, String xpathLocator, String...params) {
+		xpathLocator = getDynamicLocator(xpathLocator, params);
+		select = new Select(getWebElement(driver, xpathLocator));
+		return select.getFirstSelectedOption().getText();
+	}
+	
 	public boolean isDropdownMultiple(WebDriver driver, String xpathLocator) {
 		Select select = new Select(getWebElement(driver, xpathLocator));
 		return select.isMultiple();
 		
 	}
 	
-	public void selectItemInCustomDropdown(WebDriver driver, String parentXpath, String childXpath, String expectedItem) {
+	public String getSelectedValueInDropdownByID(WebDriver driver, String dropdownID) {
+		waitForElementClickable(driver, BasePageUI.DROPDOWN_BY_ID, dropdownID);
+		return getSelectedItemDropdown(driver, BasePageUI.DROPDOWN_BY_ID, dropdownID);
+	}
+	
+ 	public void selectItemInCustomDropdown(WebDriver driver, String parentXpath, String childXpath, String expectedItem) {
 		getWebElement(driver, parentXpath).click();
 		sleepInSecond(2);
 		
@@ -303,8 +326,16 @@ public class BasePage {
 		return getWebElement(driver, xpathLocator).isEnabled();
 	}
 	
+	public boolean isElementEnabled(WebDriver driver, String xpathLocator, String... params) {
+		return getWebElement(driver, getDynamicLocator(xpathLocator, params)).isEnabled();
+	}
+	
 	public boolean isElementSelected(WebDriver driver, String xpathLocator) {
 		return getWebElement(driver, xpathLocator).isSelected();
+	}
+	
+	public boolean isElementSelected(WebDriver driver, String xpathLocator, String... params) {
+		return getWebElement(driver, getDynamicLocator(xpathLocator, params)).isSelected();
 	}
 	
 	public void switchToFrameIframe(WebDriver driver, String xpathLocator) {
@@ -577,9 +608,9 @@ public class BasePage {
 	}
 	
 	//Textbox in Add Employee Form
-	public void enterAddEmployeeTextboxByName(WebDriver driver, String nameTextbox, String textValue) {
-		waitForElementVisible(driver, BasePageUI.DYNAMIC_ADD_EMPLOYEE_TEXTBOX_BY_NAME, nameTextbox);
-		sendkeyToElement(driver, BasePageUI.DYNAMIC_ADD_EMPLOYEE_TEXTBOX_BY_NAME, textValue, nameTextbox);
+	public void enterEmployeeTextboxByName(WebDriver driver, String nameTextbox, String textValue) {
+		waitForElementVisible(driver, BasePageUI.DYNAMIC_TEXTBOX_BY_NAME, nameTextbox);
+		sendkeyToElement(driver, BasePageUI.DYNAMIC_TEXTBOX_BY_NAME, textValue, nameTextbox);
 	}
 	
 	//Textbox in Login Form
@@ -587,11 +618,31 @@ public class BasePage {
 		waitForElementVisible(driver, BasePageUI.DYNAMIC_LOGIN_TEXTBOX_BY_NAME, nameTextbox);
 		sendkeyToElement(driver, BasePageUI.DYNAMIC_LOGIN_TEXTBOX_BY_NAME, textValue, nameTextbox);
 	}
+		
+	public DashboardPO loginToSystem(WebDriver driver, String userTextbox, String passwordTextbox, String userName, String password) {
+		waitForElementVisible(driver, BasePageUI.DYNAMIC_LOGIN_TEXTBOX_BY_NAME, userTextbox);
+		sendkeyToElement(driver, BasePageUI.DYNAMIC_LOGIN_TEXTBOX_BY_NAME, userName, userTextbox);
+		sendkeyToElement(driver, BasePageUI.DYNAMIC_LOGIN_TEXTBOX_BY_NAME, password, passwordTextbox);
+		clickToElement(driver, BasePageUI.LOGIN_BUTTON);
+		return PageGenerator.getDashboardPage(driver);
+	}
 	
 	//Create Login Details Textbox
 	public void enterCreateLoginDetailsTextboxByText(WebDriver driver, String textValue, String textInput) {
 		waitForElementVisible(driver, BasePageUI.DYNAMIC_CREATE_LOGIN_DETAIL_TEXTBOX_BY_TEXT, textValue);
 		sendkeyToElement(driver, BasePageUI.DYNAMIC_CREATE_LOGIN_DETAIL_TEXTBOX_BY_TEXT, textInput, textValue);
+	}
+	
+	
+	/**
+	 * Get textbox value by name
+	 * @param driver
+	 * @param textboxName
+	 * @return
+	 */
+	public String getTextboxValueByName(WebDriver driver, String textboxName) {
+		waitForElementVisible(driver, BasePageUI.DYNAMIC_TEXTBOX_BY_NAME, textboxName);
+		return getElementAttribute(driver, BasePageUI.DYNAMIC_TEXTBOX_BY_NAME, "value", textboxName);
 	}
 	
 	//Radio button
@@ -619,9 +670,45 @@ public class BasePage {
 		}
 	}
 	
+	public boolean isRadioButtonSelectedByValue(WebDriver driver, String value) {
+		waitForElementVisible(driver, BasePageUI.DYNAMIC_RADIO_BUTTON_BY_VALUE, value);
+		return isElementSelected(driver, BasePageUI.DYNAMIC_RADIO_BUTTON_BY_VALUE, value);
+	}
+	
+	
+	
+	public LoginPO logoutToSystem(WebDriver driver) {
+		waitForElementClickable(driver, BasePageUI.USER_ICON);
+		clickToElement(driver, BasePageUI.USER_ICON);
+		
+		waitForElementClickable(driver, BasePageUI.LOGOUT_LINK);
+		clickToElement(driver, BasePageUI.LOGOUT_LINK);
+		return PageGenerator.getLoginPage(driver);
+	}
+	
+	public void uploadImage(WebDriver driver, String filePath) {
+		getWebElement(driver, BasePageUI.UPLOAD_FILE).sendKeys(filePath);
+	}
+	
+	public boolean isSuccessMessageDisplayed(WebDriver driver, String messageValue) {
+		waitForElementVisible(driver, BasePageUI.SUCCESS_MESSAGE, messageValue);
+		return isElementDisplayed(driver, BasePageUI.SUCCESS_MESSAGE, messageValue);
+	}
+	
+	public boolean isFieldEnabledByLabel(WebDriver driver, String label) {
+		waitForElementVisible(driver, BasePageUI.ANY_FILED_BY_LABEL, label);
+		return isElementEnabled(driver, BasePageUI.ANY_FILED_BY_LABEL, label);
+	}
+	
+	public void clickToSaveButtonByFormName(WebDriver driver, String formName) {
+		waitForElementClickable(driver, BasePageUI.SAVE_BUTTON_BY_FORM_NAME, formName);
+		clickToElement(driver, BasePageUI.SAVE_BUTTON_BY_FORM_NAME, formName);
+	}
+	
 	private long shortTimeout = GlobalConstants.SHORT_TIMEOUT;
 	private long longTimeout = GlobalConstants.LONG_TIMEOUT;
 	private WebDriverWait explicitWait;
 	private JavascriptExecutor jsExecutor;
 	private Actions action;
+	private Select select;
 }

@@ -12,8 +12,5 @@ public class LoginPO extends BasePage{
 		this.driver = driver;
 	}
 
-	public void clickToLoginButton() {
-		waitForElementClickable(driver, LoginPUI.LOGIN_BUTTON);
-		clickToElement(driver, LoginPUI.LOGIN_BUTTON);
-	}
+	
 }

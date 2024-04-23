@@ -17,9 +17,5 @@ public class AddEmployeePO extends BasePage{
 		clickToElement(driver, AddEmployeePUI.CREATE_LOGIN_DETAIL_BUTTON);
 	}
 
-	public PersonalDetailPO clickToSaveButton() {
-		waitForElementClickable(driver, AddEmployeePUI.SAVE_ADD_EMPLOYEE_BUTTON);
-		clickToElement(driver, AddEmployeePUI.SAVE_ADD_EMPLOYEE_BUTTON);
-		return PageGenerator.getPersonalDetailPage(driver);
-	}
+	
 }

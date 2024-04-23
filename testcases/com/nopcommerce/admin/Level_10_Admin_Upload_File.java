@@ -71,7 +71,7 @@ public class Level_10_Admin_Upload_File extends BaseTest{
 				
 		Assert.assertTrue(productDetailPage.isPictureImageDisplayed(productName, productOrder, productAlt, productTitle));
 		
-		productSearchPage = productDetailPage.clickToSaveButton();
+		productSearchPage = productDetailPage.clickToSaveButtonByFormName();
 		
 		Assert.assertTrue(productSearchPage.isSuccessMessageDisplayed("The product has been updated successfully."));
 		
@@ -89,7 +89,7 @@ public class Level_10_Admin_Upload_File extends BaseTest{
 		
 		Assert.assertTrue(productDetailPage.isMessageDisplayInEmptyTable(driver, "productpictures"));
 
-		productSearchPage = productDetailPage.clickToSaveButton();
+		productSearchPage = productDetailPage.clickToSaveButtonByFormName();
 		
 		productSearchPage.enterToProductNameTextbox(productName);
 		

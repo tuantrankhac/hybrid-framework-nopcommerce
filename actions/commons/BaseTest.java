@@ -78,6 +78,11 @@ public class BaseTest{
 		return rand.nextInt(9999) + "@qa.team";
 	}
 
+	protected int generateNumber() {
+		Random rand = new Random();
+		return rand.nextInt(9999);
+	}
+	
 	protected boolean verifyTrue(boolean condition) {
 		boolean status = true;
 		try {
