@@ -11,6 +11,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.safari.SafariDriver;
 import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.BeforeTest;
@@ -41,6 +42,8 @@ public class BaseTest{
 		}else if(browser==BROWSER.EDGE_CHROMIUM){
 			WebDriverManager.edgedriver().setup();
 			driver = new EdgeDriver();
+		}else if(browser==BROWSER.SAFARI){
+			driver = new SafariDriver();
 		}else {
 			throw new RuntimeException("Please enter correct browser name!");
 		}
@@ -60,6 +63,8 @@ public class BaseTest{
 		}else if(browser==BROWSER.EDGE_CHROMIUM){
 			WebDriverManager.edgedriver().setup();
 			driver = new EdgeDriver();
+		}else if(browser==BROWSER.SAFARI){
+			driver = new SafariDriver();
 		}else {
 			throw new RuntimeException("Please enter correct browser name!");
 		}
