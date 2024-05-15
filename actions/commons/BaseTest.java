@@ -2,15 +2,22 @@ package commons;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.testng.Assert;
 import org.testng.Reporter;
@@ -30,6 +37,10 @@ public class BaseTest{
  	private enum BROWSER {
 		CHROME, FIREFOX, IE, SAFARI, EDGE_LEGACY, EDGE_CHROMIUM, H_CHROME, H_FIREFOX;
 	}
+ 	
+ 	private enum ENVIRONMENT{
+ 		DEV, TESTING, STAGING, PRODUCTION;
+ 	}
 	
 	protected WebDriver getBrowserDriver(String browserName) {
 		BROWSER browser = BROWSER.valueOf(browserName.toUpperCase());
@@ -69,9 +80,88 @@ public class BaseTest{
 			throw new RuntimeException("Please enter correct browser name!");
 		}
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-		//driver.manage().window().maximize();
-		driver.get(appUrl);
+		driver.manage().window().maximize();
+		driver.get(getEnvironmentValue(appUrl));
 		return driver;
+	}
+	
+	protected WebDriver getBrowserDriver(String browserName, String appUrl, String ipAddress, String portNumber) {
+		BROWSER browser = BROWSER.valueOf(browserName.toUpperCase());
+		DesiredCapabilities capability = null;
+		
+		if(browser==BROWSER.CHROME) {
+			WebDriverManager.chromedriver().setup();
+			capability = DesiredCapabilities.chrome();
+			capability.setBrowserName("chrome");
+			capability.setPlatform(Platform.WINDOWS);
+			ChromeOptions cOptions = new ChromeOptions();
+			cOptions.merge(capability);
+			
+		}else if(browser==BROWSER.FIREFOX) {
+			WebDriverManager.firefoxdriver().setup();
+			capability = DesiredCapabilities.firefox();
+			capability.setBrowserName("firefox");
+			capability.setPlatform(Platform.WINDOWS);
+			FirefoxOptions fOptions = new FirefoxOptions();
+			fOptions.merge(capability);
+			
+		}else if(browser==BROWSER.EDGE_CHROMIUM){
+			WebDriverManager.edgedriver().setup();
+			driver = new EdgeDriver();
+		}else if(browser==BROWSER.SAFARI){
+			driver = new SafariDriver();
+		}else {
+			throw new RuntimeException("Please enter correct browser name!");
+		}
+		
+		try {
+			driver = new RemoteWebDriver(new URL(String.format("http://%s:%s/wd/hub", ipAddress, portNumber)), capability);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		driver.manage().window().maximize();
+		driver.get(getEnvironmentValue(appUrl));
+		return driver;
+	}
+	
+	protected WebDriver getBrowserDriverBrowserstack(String browserName, String appUrl, String osName, String osVersion) {
+		BROWSER browser = BROWSER.valueOf(browserName.toUpperCase());
+		DesiredCapabilities capability = null;
+		
+		capability.setCapability("os", osName);
+		capability.setCapability("os_version", osVersion);
+		capability.setCapability("browser", browserName);
+		capability.setCapability("browser_version", "lastest");
+		capability.setCapability("browserstack.debug", "true");
+		capability.setCapability("name", "Run on " + osName + " | " + osVersion + " | " + browserName);;
+		
+		try {
+			driver = new RemoteWebDriver(new URL(String.format("http://%s:%s/wd/hub", osName, osVersion)), capability);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		driver.manage().window().maximize();
+		driver.get(getEnvironmentValue(appUrl));
+		return driver;
+	}
+	
+	private String getEnvironmentValue(String environmentName) {
+		String envUrl = null;
+		ENVIRONMENT environment = ENVIRONMENT.valueOf(environmentName.toUpperCase());
+		if(environment == ENVIRONMENT.DEV) {
+			envUrl = "https://demo.guru99.com/v1/";
+		}else if(environment == ENVIRONMENT.TESTING) {
+			envUrl = "https://demo.guru99.com/v2/";
+		}else if(environment == ENVIRONMENT.STAGING) {
+			envUrl = "https://demo.guru99.com/v3/";
+		}else if(environment == ENVIRONMENT.PRODUCTION) {
+			envUrl = "https://demo.guru99.com/v4/";
+		}
+		return envUrl;
 	}
 	
 	public WebDriver getWebDriver() {

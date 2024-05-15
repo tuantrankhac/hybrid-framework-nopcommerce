@@ -16,4 +16,10 @@ public class GlobalConstants {
 	public static final long RYTRY_TIMEOUT = 3;
 	public static final String TECHPANDA_USER_PAGE_URL = "http://live.techpanda.org/index.php/";
 	public static final String TECHPANDA_ADMIN_PAGE_URL = "http://live.techpanda.org/index.php/backendlogin/customer/";
+	
+	public static final String BROWSER_USERNAME = "http://live.techpanda.org/index.php/backendlogin/customer/";
+	public static final String BROWSER_AUTOMATION_KEY = "http://live.techpanda.org/index.php/backendlogin/customer/";
+	public static final String BROWSER_STACK_URL = "http://live.techpanda.org/index.php/backendlogin/customer/";
+
+	
 }

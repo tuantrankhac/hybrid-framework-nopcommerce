@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="NopCommerce">
+<parameter name = "url" value = "https://demo.nopcommerce.com/" />
+<parameter name = "ipAddress" value = "192.168.1.9" />
+<parameter name = "port" value = "5555" />
+
+  <test name="Run on Chrome">
+  <parameter name = "browser" value="chrome"/>
+  <parameter name = "os" value="Windows"/>
+  <parameter name = "os_version" value="11"/>
+  <classes>
+      <class name="com.nopcommerce.cloud.Level_20_Browserstack"/>
+  </classes>
+  </test>
+  
+  <test name="Run on Firefox">
+  <parameter name = "browser" value="firefox"/>
+  <parameter name = "os" value="Windows"/>
+  <parameter name = "os_version" value="11"/>
+  <classes>
+      <class name="com.nopcommerce.cloud.Level_20_Browserstack"/>
+  </classes>
+  </test>
+  
+</suite> 
